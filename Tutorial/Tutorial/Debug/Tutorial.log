@@ -1,0 +1,5 @@
+﻿  Snake.cpp
+c:\users\jake\documents\visual studio 2015\projects\tutorial\tutorial\snake.cpp(7): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\jake\documents\visual studio 2015\projects\tutorial\tutorial\snake.cpp(166): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\jake\documents\visual studio 2015\projects\tutorial\tutorial\snake.cpp(174): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Tutorial.vcxproj -> C:\Users\Jake\Documents\Visual Studio 2015\Projects\Tutorial\Debug\Tutorial.exe
