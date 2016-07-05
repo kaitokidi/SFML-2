@@ -1,10 +1,13 @@
 #include <SFML\Graphics.hpp>
 
+#include <iostream>
+
 #include "Snake.h"
 #include "Window.h"
 
-Snake::Snake(int blockSize) : size(blockSize) {
-	bodyRect.setSize(sf::Vector2f(size - 1, size - 1));
+Snake::Snake(int blockSize, Textbox& textbox) :
+	size(blockSize), textbox(textbox) {
+	bodyRect.setSize(sf::Vector2f(size - 0, size - 0));
 	Reset();
 }
 
@@ -16,6 +19,25 @@ void Snake::SetDirection(Direction dir) {
 
 Direction Snake::GetDirection() const {
 	return dir;
+}
+
+Direction Snake::GetPhyiscalDirection() const {
+	if (snakeBody.size() <= 1) {
+		return Direction::None;
+	}
+
+	const SnakeSegment& head = snakeBody[0];
+	const SnakeSegment& neck = snakeBody[1];
+
+	if (head.position.x == neck.position.x) {
+		return (head.position.y > neck.position.y) ?
+			Direction::Down :
+			Direction::Up;
+	} else {
+		return (head.position.x > neck.position.x) ?
+			Direction::Right :
+			Direction::Left;
+	}
 }
 
 int Snake::GetSpeed() const {
@@ -38,6 +60,7 @@ int Snake::GetScore() const {
 
 void Snake::IncreaseScore() {
 	score += 10;
+	textbox.Add("You ate an apple! Score: " + std::to_string(score));
 }
 
 bool Snake::HasLost() const {
@@ -46,6 +69,12 @@ bool Snake::HasLost() const {
 
 void Snake::Lose() {
 	lost = true;
+	textbox.Clear();
+	textbox.Add("");
+	textbox.Add("");
+	textbox.Add("");
+	textbox.Add("");
+	textbox.Add("Game Over! Score: " + std::to_string(score));
 }
 
 void Snake::ToggleLost() {
@@ -56,6 +85,8 @@ void Snake::Extend() {
 	if (snakeBody.empty()) {
 		return;
 	}
+
+	speed += 1;
 
 	SnakeSegment& tail_head = snakeBody[snakeBody.size() - 1];
 
@@ -106,10 +137,12 @@ void Snake::Extend() {
 void Snake::Reset() {
 	snakeBody.clear();
 
-	snakeBody.push_back(SnakeSegment(5, 7));
+	snakeBody.push_back(SnakeSegment(5, 5));
+	snakeBody.push_back(SnakeSegment(5, 4));
+	snakeBody.push_back(SnakeSegment(5, 3));
 
 	SetDirection(Direction::None); // start off still.
-	speed = 200;
+	speed = 10;
 	lives = 3;
 	score = 0;
 	lost = false;
@@ -146,10 +179,13 @@ void Snake::Tick() {
 }
 
 void Snake::Cut(int segments) {
+	textbox.Add("You ran into yourself and lost " +
+		std::to_string(segments) + " segments");
 	for (int i = 0; i != segments; ++i) {
 		snakeBody.pop_back();
 	}
 	--lives;
+	std::cout << lives << "\n";
 	if (!lives) {
 		Lose();
 	}
@@ -172,6 +208,9 @@ void Snake::Render(Window& window) {
 	{
 		bodyRect.setPosition(itr->position.x * size,
 			itr->position.y * size);
+		if (itr + 1 == snakeBody.end()) {
+			bodyRect.setFillColor(sf::Color::White);
+		}
 		window.Draw(bodyRect);
 	}
 }

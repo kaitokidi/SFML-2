@@ -1,11 +1,18 @@
 #include "Game.h"
 
-Game::Game() : window("Snake", sf::Vector2u(800, 600)),
-	snake(world.GetBlockSize()), 
-	world(sf::Vector2u(800, 600))
+static const size_t	WIDTH	= 20 * 40;
+static const size_t HEIGHT	= 20 * 30;
+
+Game::Game() :
+	window("Snake", sf::Vector2u(WIDTH, HEIGHT)),
+	world(sf::Vector2u(WIDTH, HEIGHT)),
+	snake(world.GetBlockSize(), textbox),
+	textbox(5, 14, 350, sf::Vector2f(225, 0))
 {
 	clock.restart();
 	srand(time(nullptr));
+	textbox.Add("Seeded random number generator with: " +
+		std::to_string(time(nullptr)));
 
 	elapsed = 0.0f;
 }
@@ -19,16 +26,16 @@ Window* Game::GetWindow(){ return &window; }
 void Game::HandleInput(){
 	// Input handling.
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) 
-		&& snake.GetDirection() != Direction::Down){
+		&& snake.GetPhyiscalDirection() != Direction::Down){
 		snake.SetDirection(Direction::Up);
 	} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) 
-		&& snake.GetDirection() != Direction::Up){
+		&& snake.GetPhyiscalDirection() != Direction::Up){
 		snake.SetDirection(Direction::Down);
 	} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) 
-		&& snake.GetDirection() != Direction::Right){
+		&& snake.GetPhyiscalDirection() != Direction::Right){
 		snake.SetDirection(Direction::Left);
 	} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) 
-		&& snake.GetDirection() != Direction::Left){
+		&& snake.GetPhyiscalDirection() != Direction::Left){
 		snake.SetDirection(Direction::Right);
 	}
 }
@@ -51,6 +58,7 @@ void Game::Render(){
 	// Render here.
 	world.Render(window);
 	snake.Render(window);
+	textbox.Render(window);
 
 	window.EndDraw();
 }

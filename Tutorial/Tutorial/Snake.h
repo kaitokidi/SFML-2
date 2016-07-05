@@ -4,6 +4,7 @@
 #include <SFML\Graphics.hpp>
 
 #include "Window.h"
+#include "Textbox.h"
 
 struct SnakeSegment {
 	SnakeSegment(int x, int y) : position(x, y) {}
@@ -16,12 +17,13 @@ using SnakeContainer = std::vector<SnakeSegment>;
 
 class Snake {
 public:
-	Snake(int blockSize);
+	Snake(int blockSize, Textbox& textbox);
 	~Snake();
 
 	// Helper methods.
 	void SetDirection(Direction dir);
 	Direction GetDirection() const;
+	Direction GetPhyiscalDirection() const;
 	int GetSpeed() const;
 	sf::Vector2i GetPosition() const;
 	int GetLives() const;
@@ -51,6 +53,7 @@ private:
 	int score;
 	bool lost;
 	sf::RectangleShape bodyRect;
+	Textbox& textbox;
 };
 
 

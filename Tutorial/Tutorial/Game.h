@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "World.h"
 #include "Snake.h"
+#include "Textbox.h"
 
 class Game{
 public:
@@ -23,4 +24,5 @@ private:
 
 	World world;
 	Snake snake;
+	Textbox textbox;
 };

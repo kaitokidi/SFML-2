@@ -1,0 +1,10 @@
+﻿  Snake.cpp
+Snake.cpp(10): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+Snake.cpp(202): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+Snake.cpp(210): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating code
+  4 of 380 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    11 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Tutorial.vcxproj -> C:\Users\Jake\Documents\Visual Studio 2015\Projects\SFML\Tutorial\Release\Tutorial.exe

@@ -1,16 +1,16 @@
 #include "World.h"
 #include "Window.h"
 
-World::World(sf::Vector2u windSize){
-	blockSize = 16;
+World::World(sf::Vector2u windSize) {
+	blockSize = 20;
 
 	windowSize = windSize;
 	RespawnApple();
-	appleShape.setFillColor(sf::Color::Magenta);
+	appleShape.setFillColor(sf::Color::Red);
 	appleShape.setRadius(blockSize / 2);
 
 	for(int i = 0; i < 4; ++i){
-		bounds[i].setFillColor(sf::Color(150,0,0));
+		bounds[i].setFillColor(sf::Color::Blue);
 		if(!((i + 1) % 2)){
 			bounds[i].setSize(sf::Vector2f(windowSize.x, blockSize));
 		} else {
@@ -25,11 +25,11 @@ World::World(sf::Vector2u windSize){
 	}
 }
 
-World::~World(){}
+World::~World() {}
 
-int World::GetBlockSize(){ return blockSize; }
+int World::GetBlockSize() { return blockSize; }
 
-void World::RespawnApple(){
+void World::RespawnApple() {
 	int maxX = (windowSize.x / blockSize) - 2;
 	int maxY = (windowSize.y / blockSize) - 2;
 	item = sf::Vector2i(
@@ -39,7 +39,7 @@ void World::RespawnApple(){
 		item.y * blockSize);
 }
 
-void World::Update(Snake& player){
+void World::Update(Snake& player) {
 	if(player.GetPosition() == item){
 		player.Extend();
 		player.IncreaseScore();
@@ -58,7 +58,7 @@ void World::Update(Snake& player){
 	}
 }
 
-void World::Render(Window& window){
+void World::Render(Window& window) {
 	for(int i = 0; i < 4; ++i){
 		window.Draw(bounds[i]);
 	}
