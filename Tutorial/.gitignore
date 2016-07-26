@@ -2,4 +2,5 @@
 *.VC.opendb
 Debug/
 Release/
-.vs/
+x64/
+x86/
