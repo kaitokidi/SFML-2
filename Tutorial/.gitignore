@@ -1,2 +1,5 @@
 *.VC.db
 *.VC.opendb
+Debug/
+Release/
+.vs/

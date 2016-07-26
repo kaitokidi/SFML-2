@@ -1,10 +1,24 @@
-﻿  Snake.cpp
+﻿  Game.cpp
+Game.cpp(13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  main.cpp
+  Snake.cpp
 Snake.cpp(17): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 Snake.cpp(181): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 Snake.cpp(189): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Textbox.cpp
+Textbox.cpp(27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+Textbox.cpp(34): warning C4018: '>': signed/unsigned mismatch
+  Window.cpp
+  World.cpp
+World.cpp(10): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+World.cpp(15): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+World.cpp(15): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+World.cpp(17): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+World.cpp(17): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+World.cpp(39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  1 of 382 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  381 of 382 functions (99.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    9 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  Tutorial.vcxproj -> C:\Users\Jake\Documents\Visual Studio 2015\Projects\SFML\Tutorial\Release\Tutorial.exe
+  Tutorial.vcxproj -> C:\Users\Jake\Desktop\tmp\SFML\Tutorial\Release\Tutorial.exe
