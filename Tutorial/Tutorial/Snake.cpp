@@ -7,7 +7,14 @@
 
 Snake::Snake(int blockSize, Textbox& textbox) :
 	size(blockSize), textbox(textbox) {
-	bodyRect.setSize(sf::Vector2f(size - 0, size - 0));
+	music.openFromFile("Electrix_NES.ogg");
+	music.setLoop(true);
+	music.play();
+	loseSoundBuffer.loadFromFile("footstep.ogg");
+	loseSound.setBuffer(loseSoundBuffer);
+	eatSoundBuffer.loadFromFile("glass.ogg");
+	eatSound.setBuffer(eatSoundBuffer);
+	bodyRect.setSize(sf::Vector2f(size - 1, size - 1));
 	Reset();
 }
 
@@ -59,6 +66,7 @@ int Snake::GetScore() const {
 }
 
 void Snake::IncreaseScore() {
+	eatSound.play();
 	score += 10;
 	textbox.Add("You ate an apple! Score: " + std::to_string(score));
 }
@@ -68,6 +76,7 @@ bool Snake::HasLost() const {
 }
 
 void Snake::Lose() {
+	music.pause();
 	lost = true;
 	textbox.Clear();
 	textbox.Add("");
@@ -75,6 +84,11 @@ void Snake::Lose() {
 	textbox.Add("");
 	textbox.Add("");
 	textbox.Add("Game Over! Score: " + std::to_string(score));
+	for (int i = 0; i != 4; ++i) {
+		loseSound.play();
+		sf::sleep(sf::milliseconds(200));
+	}
+	music.play();
 }
 
 void Snake::ToggleLost() {
@@ -88,58 +102,17 @@ void Snake::Extend() {
 
 	speed += 1;
 
-	SnakeSegment& tail_head = snakeBody[snakeBody.size() - 1];
-
-	if (snakeBody.size() > 1) {
-		SnakeSegment& tail_bone = snakeBody[snakeBody.size() - 2];
-
-		if (tail_head.position.x == tail_bone.position.x) {
-			if (tail_head.position.y > tail_bone.position.y) {
-				snakeBody.push_back(SnakeSegment(tail_head.position.x,
-					tail_head.position.y + 1));
-			}
-			else {
-				snakeBody.push_back(SnakeSegment(tail_head.position.x,
-					tail_head.position.y - 1));
-			}
-		}
-		else if (tail_head.position.y == tail_bone.position.y) {
-			if (tail_head.position.x > tail_bone.position.x) {
-				snakeBody.push_back(SnakeSegment(tail_head.position.x + 1,
-					tail_head.position.y));
-			}
-			else {
-				snakeBody.push_back(SnakeSegment(tail_head.position.x - 1,
-					tail_head.position.y));
-			}
-		}
-	}
-	else {
-		if (dir == Direction::Up) {
-			snakeBody.push_back(SnakeSegment(tail_head.position.x,
-				tail_head.position.y + 1));
-		}
-		else if (dir == Direction::Down) {
-			snakeBody.push_back(SnakeSegment(tail_head.position.x,
-				tail_head.position.y - 1));
-		}
-		else if (dir == Direction::Left) {
-			snakeBody.push_back(SnakeSegment(tail_head.position.x + 1,
-				tail_head.position.y));
-		}
-		else if (dir == Direction::Right) {
-			snakeBody.push_back(SnakeSegment(tail_head.position.x - 1,
-				tail_head.position.y));
-		}
-	}
+	snakeBody.push_back(SnakeSegment(lastTailPosition));
 }
 
 void Snake::Reset() {
 	snakeBody.clear();
 
-	snakeBody.push_back(SnakeSegment(5, 5));
-	snakeBody.push_back(SnakeSegment(5, 4));
-	snakeBody.push_back(SnakeSegment(5, 3));
+	snakeBody.push_back(SnakeSegment(10, 10));
+	snakeBody.push_back(SnakeSegment(10, 9));
+	snakeBody.push_back(SnakeSegment(10, 8));
+
+	lastTailPosition = sf::Vector2i(10, 8);
 
 	SetDirection(Direction::None); // start off still.
 	speed = 10;
@@ -148,6 +121,9 @@ void Snake::Reset() {
 	lost = false;
 }
 
+void Snake::UpdateLastTailPosition() {
+	lastTailPosition = snakeBody[snakeBody.size() - 1].position;
+}
 
 void Snake::Move() {
 	for (int i = snakeBody.size() - 1; i > 0; --i) {
@@ -174,16 +150,19 @@ void Snake::Tick() {
 	if (dir == Direction::None) {
 		return;
 	}
+	UpdateLastTailPosition();
 	Move();
 	CheckCollision();
 }
 
 void Snake::Cut(int segments) {
+	loseSound.play();
 	textbox.Add("You ran into yourself and lost " +
 		std::to_string(segments) + " segments");
 	for (int i = 0; i != segments; ++i) {
 		snakeBody.pop_back();
 	}
+	UpdateLastTailPosition();
 	--lives;
 	std::cout << lives << "\n";
 	if (!lives) {
@@ -201,16 +180,13 @@ void Snake::Render(Window& window) {
 	bodyRect.setPosition(head->position.x * size,
 		head->position.y * size);
 	window.Draw(bodyRect);
+	bodyRect.setFillColor(sf::Color::Cyan);
 
-	bodyRect.setFillColor(sf::Color::Green);
 	for (auto itr = snakeBody.begin() + 1;
 		itr != snakeBody.end(); ++itr)
 	{
 		bodyRect.setPosition(itr->position.x * size,
 			itr->position.y * size);
-		if (itr + 1 == snakeBody.end()) {
-			bodyRect.setFillColor(sf::Color::White);
-		}
 		window.Draw(bodyRect);
 	}
 }

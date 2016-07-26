@@ -6,11 +6,11 @@ World::World(sf::Vector2u windSize) {
 
 	windowSize = windSize;
 	RespawnApple();
-	appleShape.setFillColor(sf::Color::Red);
+	appleShape.setFillColor(sf::Color::Cyan);
 	appleShape.setRadius(blockSize / 2);
 
 	for(int i = 0; i < 4; ++i){
-		bounds[i].setFillColor(sf::Color::Blue);
+		bounds[i].setFillColor(sf::Color::Magenta);
 		if(!((i + 1) % 2)){
 			bounds[i].setSize(sf::Vector2f(windowSize.x, blockSize));
 		} else {

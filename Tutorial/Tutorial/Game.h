@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Window.h"
 #include "World.h"
 #include "Snake.h"

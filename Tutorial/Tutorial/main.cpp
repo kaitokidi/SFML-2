@@ -2,7 +2,7 @@
 
 #include "Game.h"
 
-void main(int argc, char** argv[]) {
+int main(int argc, char** argv[]) {
 	// Program entry point.
 	Game game; // Creating our game object.
 	while (!game.GetWindow()->IsDone()) {
@@ -12,4 +12,6 @@ void main(int argc, char** argv[]) {
 		game.Render();
 		game.RestartClock();
 	}
+
+	return 0;
 }
