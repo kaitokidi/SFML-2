@@ -7,12 +7,12 @@
 
 Snake::Snake(int blockSize, Textbox& textbox) :
 	size(blockSize), textbox(textbox) {
-	music.openFromFile("Electrix_NES.ogg");
+	if(! music.openFromFile("Electrix_NES.ogg"))std::cout << "error loading electrix_ness.ogg music file" << std::endl;
 	music.setLoop(true);
 	music.play();
-	loseSoundBuffer.loadFromFile("footstep.ogg");
+	if(!loseSoundBuffer.loadFromFile("footstep.ogg"))std::cout << "error loading footstep.ogg sound file" << std::endl;
 	loseSound.setBuffer(loseSoundBuffer);
-	eatSoundBuffer.loadFromFile("glass.ogg");
+	if(!eatSoundBuffer.loadFromFile("glass.ogg"))std::cout << "error loading glass.ogg sound file" << std::endl;
 	eatSound.setBuffer(eatSoundBuffer);
 	bodyRect.setSize(sf::Vector2f(size - 1, size - 1));
 	Reset();
